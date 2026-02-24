@@ -22,6 +22,8 @@ To control which pods land on which nodes:
 
 - **nodeSelector** — a pod-level setting that says "only schedule me on nodes with this label." E.g., `nodeSelector: {pool: critical}` means the pod only runs on nodes labeled `pool=critical`.
 - **Taints and tolerations** — taints are the opposite. A **taint** on a node says "don't schedule anything here unless it explicitly tolerates me." Think of it like a "keep out" sign. A **toleration** on a pod says "I'm allowed past that sign." This prevents random workloads from landing on special nodes.
+  - `operator: Equal` (default) — matches a specific taint key+value. Need one toleration per value.
+  - `operator: Exists` — matches a taint key regardless of value. One toleration covers all values of that key. E.g., `{key: runner-type, operator: Exists, effect: NoSchedule}` tolerates `runner-type=android`, `runner-type=image-cached`, etc.
 
 ### Why this matters for NAT
 
