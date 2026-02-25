@@ -22,7 +22,7 @@ Networking is described in layers. The ones that matter most:
 
 - **L3 (Network)** — IP addresses. "This packet goes from 10.0.1.5 to 140.82.113.3." Cloud NAT operates here.
 - **L4 (Transport)** — TCP/UDP ports. "This is a TCP connection on port 443." Firewalls and basic load balancers operate here.
-- **L7 (Application)** — HTTP, the actual request. "GET /k/platform-proto with Authorization header and response was 401." Envoy, mitmproxy, nginx operate here.
+- **L7 (Application)** — HTTP, the actual request. "GET /org/some-repo with Authorization header and response was 401." Envoy, mitmproxy, nginx operate here.
 
 The higher the layer, the more the proxy can see and do. Cloud NAT (L3/L4) can't tell you that GitHub returned a 401. An L7 proxy can.
 
@@ -129,3 +129,7 @@ Configured via `GOPROXY=http://athens-proxy.athens.svc.cluster.local:3000`. When
 3. If not, Athens fetches from GitHub, caches it, and returns it
 
 This reduces unauthenticated requests to GitHub dramatically. The key gap: Athens only helps if the workflow sets the `GOPROXY` env var. Workflows that don't (like CodeQL's default setup) bypass Athens entirely and hit GitHub directly.
+
+## See also
+
+- [[notes/observability-hacks]] — practical techniques (docker binary wrapper, MITM proxy) for debugging CI traffic without full proxy infrastructure
